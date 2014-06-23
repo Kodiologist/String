@@ -77,6 +77,8 @@ my %matching_tasks =
 # Mainline code
 # ------------------------------------------------
 
+my $see_experimenter_msg = 'The task is complete. Please see the experimenter.';
+
 $o = new Tversky
    (cookie_name_suffix => 'String',
     here_url => $p{here_url},
@@ -94,11 +96,12 @@ $o = new Tversky
     password_hash => $p{password_hash},
     password_salt => $p{password_salt},
 
-    experiment_complete => '<p>The task is complete.</p>');
+    experiment_complete => "<p>$see_experimenter_msg</p>");
 
 $o->run(sub
 
    {$matching_tasks{$o->getu('first_task')}->();
+    $o->okay_page('between_tasks', "<p style='margin-bottom: 20in'>$see_experimenter_msg</p>");
     $matching_tasks{$o->getu('first_task') eq 'risk' ? 'delay' : 'risk'}->();});
 
 __DATA__
