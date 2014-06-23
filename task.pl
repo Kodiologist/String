@@ -5,7 +5,7 @@ my %p;
 
 use strict;
 
-use Tversky 'cat', 'randelm';
+use Tversky 'cat';
 
 # ------------------------------------------------
 # Parameters
@@ -62,8 +62,7 @@ sub matching_task
     $o->loop("m_${k}_iter", sub
        {my $trial = $_ + 1;
 
-        my $ssr = $o->save_once("m_${k}_ssr.$trial", sub
-           {randelm @ssrs});
+        my $ssr = $o->randomly_assign("m_${k}_ssr.$trial", @ssrs);
         matching_trial "m_${k}_response.$trial",
             $ssr, $ss_condition, $ll_condition;
 
