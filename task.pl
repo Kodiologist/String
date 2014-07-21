@@ -26,21 +26,6 @@ sub p ($)
 
 sub matching_trial
    {my ($key, $ss_reward, $ss_condition, $ll_condition) = @_;
-    if (defined $key)
-       {$o->okay_page('matching_instructions', cat
-            '<p class="long">In this task, you will answer a series of questions.',
-            '<p class="long">Each trial will present you with a hypothetical choice between two amounts of money. However, one of the amounts will be left blank. For example, a trial might be:',
-                '<ul class="matching">',
-                '<li>$20 today',
-                '<li>$__ in 1 month',
-                '</ul>',
-            '<p class="long">Or a trial might involve uncertainty instead of delay:</p>',
-                '<ul class="matching">',
-                '<li>$20 for sure',
-                '<li>$__ with 10% probability',
-                '</ul>',
-            '<p class="long">In each trial, your task is fill in the blank with an amount that makes the two options equally appealing to you; that is, an amount that makes you indifferent between the two options. It would make sense to fill in the blank with an amount larger than the fixed amount so that you would be compensated for the risk or delay.',
-            '<p class="long">Even though these are completely hypothetical decisions, please think carefully and imagine what you would do if you were really offered these choices.');}
     $o->dollars_entry_page($key,
         q(<p>Fill in the blank so you're indifferent between:</p>) .
         '<ul class="matching">' .
@@ -58,6 +43,16 @@ sub round
 
 sub matching_task
    {my ($k, $ss_condition, $ll_condition) = @_;
+
+    $o->okay_page("m_${k}_instructions", cat
+        '<p class="long">In this task, you will answer a series of questions.',
+        '<p class="long">Each trial will present you with a hypothetical choice between two amounts of money. However, one of the amounts will be left blank. For example, a trial might be:',
+            '<ul class="matching">',
+            "<li>\$20 $ss_condition",
+            "<li>\$__ $ll_condition",
+            '</ul>',
+        '<p class="long">In each trial, your task is fill in the blank with an amount that makes the two options equally appealing to you; that is, an amount that makes you indifferent between the two options. It would make sense to fill in the blank with <strong>an amount larger than the ' . ($k eq 'delay' ? 'immediate' : 'fixed') . " amount</strong> so that you would be <strong>compensated for the $k</strong>.",
+        '<p class="long">Even though these are completely hypothetical decisions, please think carefully and imagine what you would do if you were really offered these choices.');
 
     $o->loop("m_${k}_iter", sub
        {my $trial = $_ + 1;
