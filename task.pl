@@ -54,14 +54,10 @@ sub matching_task
         '<p class="long">In each trial, your task is fill in the blank with an amount that makes the two options equally appealing to you; that is, an amount that makes you indifferent between the two options. It would make sense to fill in the blank with <strong>an amount larger than the ' . ($k eq 'delay' ? 'immediate' : 'fixed') . " amount</strong> so that you would be <strong>compensated for the $k</strong>.",
         '<p class="long">Even though these are completely hypothetical decisions, please think carefully and imagine what you would do if you were really offered these choices.');
 
-    $o->loop("m_${k}_iter", sub
-       {my $trial = $_ + 1;
-
-        my $ssr = $o->randomly_assign("m_${k}_ssr.$trial", @ssrs);
+    foreach my $trial (1 .. $matching_trials)
+       {my $ssr = $o->randomly_assign("m_${k}_ssr.$trial", @ssrs);
         matching_trial "m_${k}_response.$trial",
-            $ssr, $ss_condition, $ll_condition;
-
-        $trial == $matching_trials and $o->done;});}
+            $ssr, $ss_condition, $ll_condition;}}
 
 my %matching_tasks =
    (delay => sub {matching_task 'delay', 'today', 'in 1 month'},
